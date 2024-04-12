@@ -23,3 +23,22 @@ model Session {
   accessToken String
   userId      BigInt?
 }
+
+model Wishlist {
+  id         String  @id @default(cuid())
+  publicId   String  @unique // Used in url to share wishlist
+  sessionId  String
+  customerId String?
+  title      String  @default("My Wishlist")
+  store      String
+
+  items WishlistItem[]
+}
+
+model WishlistItem {
+  id         Int    @id @default(autoincrement())
+  wishlistId String
+  productId  String
+
+  wishlist Wishlist @relation(fields: [wishlistId], references: [id])
+}
