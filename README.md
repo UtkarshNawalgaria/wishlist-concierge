@@ -7,6 +7,9 @@ With this app, customers on a shopify store can add products to a wishlist, shar
 
 ## App Features -
 1. Merchants can add a "Add to Wishlist" button on their product page
+   - [x] Add app block extension to add wishlist button on product page. Allow merchants to style the icons and text as they want.
+   - [ ] Create API's to add and remove items from wishlist.
+   - [ ] Add app embed extension to add a global script to manage sessions and wishlists
 2. Merchants can add a "Add to wishlist" icon on products in the collections page
 3. Customers can add save their items to their wishlist
 4. Customers can view all their wishlist items in another page
