@@ -22,24 +22,42 @@
 
 <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <script>
-  const dataToSend = {
-    sessionId: localStorage.getItem("wishlist_cg_sid"),
-    productId: "{{ product.id }}",
-    shop: "{{ shop.permanent_domain }}",
-    customerId: {% if customer %}"{{ cusomter.id }}"{% else %}null{% endif %}
-  }
-
   document.addEventListener("alpine:init", () => {
+    const dataToSend = {
+      sessionId: localStorage.getItem("wishlist_cg_sid"),
+      productId: "{{ product.id }}",
+      shop: "{{ shop.permanent_domain }}",
+      customerId: {% if customer %}"{{ cusomter.id }}"{% else %}null{% endif %}
+    }
+
     // Call API to get user wishlist
-    Alpine.data("wishlist", (initValue=false) => ({
-      added: initValue,
+    Alpine.data("wishlist", () => ({
+      added: false,
+
+      init() {
+        fetch("https://william-sake-totally-election.trycloudflare.com/api/wishlist", {
+          headers: {
+            "x-wishlist-cg-sid": localStorage.getItem("wishlist_cg_sid")
+          }
+        }).then(res => res.json())
+        .then(data => {
+          if ("wishlist" in data && data.wishlist == null) return
+
+          const { items } = data;
+          const productInWishlist = items.find(item => item.productId == "{{ product.id }}");
+
+          if (productInWishlist) {
+            this.added = true;
+          }
+        })
+      },
 
       handleButtonClick() {
         this.added ? this.removeProductFromWishlist() : this.addProductToWishlist();
       },
 
       addProductToWishlist() {
-        fetch("https://fat-themselves-promotional-understanding.trycloudflare.com/api/wishlist/add", {
+        fetch("https://william-sake-totally-election.trycloudflare.com/api/wishlist/add", {
           method: "POST",
           body: JSON.stringify(dataToSend)
         }).then(res => res.json())

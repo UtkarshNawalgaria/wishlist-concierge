@@ -1,3 +1,29 @@
-# This file stores configurations for your Shopify app.
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
+client_id = "f768b505c0b86c2106faf8b4a77032b0"
+name = "My Wishlist"
+handle = "my-wishlist-18"
+application_url = "https://william-sake-totally-election.trycloudflare.com"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+dev_store_url = "utkarsh-developer-preview.myshopify.com"
+include_config_on_deploy = true
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "write_products"
+
+[auth]
+redirect_urls = [
+  "https://william-sake-totally-election.trycloudflare.com/auth/callback",
+  "https://william-sake-totally-election.trycloudflare.com/auth/shopify/callback",
+  "https://william-sake-totally-election.trycloudflare.com/api/auth/callback"
+]
+
+[webhooks]
+api_version = "2024-04"
+
+[pos]
+embedded = false

@@ -16,6 +16,7 @@ function generateSessionId(length = 10) {
 }
 
 const WISHLIST_SELECT_FIELDS = {
+  id: true,
   publicId: true,
   sessionId: true,
   customerId: true,
@@ -58,7 +59,7 @@ export async function action({ request }) {
     });
 
     // If not, then create new Wishlist Item in the database for the customer
-    if (!wishlist) {
+    if (wishlist === null) {
       // Create wishlist
       wishlist = await prisma.wishlist.create({
         data: {
@@ -72,8 +73,18 @@ export async function action({ request }) {
         },
         select: WISHLIST_SELECT_FIELDS,
       });
+    } else {
+      // Add item to wishlist
+      const newItem = await prisma.wishlistItem.create({
+        data: {
+          productId: body.productId,
+          wishlistId: wishlist.id
+        }
+      })
+      wishlist.items.push({ productId: newItem.productId })
     }
+    delete wishlist["id"]
 
-    return json({ success: true, data: wishlist }, 200);
+    return json(wishlist, 200);
   }
 }
